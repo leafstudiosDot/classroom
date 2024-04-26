@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 .vscode
+minio-cdn
 
 # Ignore bundler config.
 /.bundle
