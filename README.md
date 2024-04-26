@@ -13,8 +13,8 @@ The application uses Ruby on Rails as the backend and React as the frontend. To 
 2. `yarn run dev` or `bun run dev`
 
 ## Database
-- `rails db:migrate` to migrate to the database
 - `rails generate migration <AnyName>` to generate a new migration file
-
+- `rails db:migrate` to migrate to the database
+- `rails db:migrate:reset` to reset the database (remove's data in database)
 
 © 2024 leafstudiosDot & other Roomital contributors
