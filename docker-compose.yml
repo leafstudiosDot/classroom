@@ -1,0 +1,66 @@
+services:
+  roomitalapi:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./:/roomital
+    depends_on:
+      - roomitaldb
+      - roomitalredis
+    networks:
+      - roomital-network
+
+  #roomitalclient:
+  #  build:
+  #    context: ./client/
+  #    dockerfile: Dockerfile
+  #  ports:
+  #    - "3000:3000"
+  #  volumes:
+  #    - ./client:/app
+
+  roomitaldb:
+    image: postgres
+    volumes:
+      - roomital_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: roomital_admin
+      POSTGRES_PASSWORD: roomital
+      POSTGRES_DB: roomital_dev
+    ports:
+      - "5432:5432"
+    networks:
+      - roomital-network
+  roomitalpgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "7650:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@roomital.com"
+      PGADMIN_DEFAULT_PASSWORD: "adminadmin"
+    volumes:
+      - roomital_pgadmin_data:/var/lib/pgadmin
+    networks:
+      - roomital-network
+  roomitalredis:
+    image: 'redis/redis-stack'
+    ports:
+      - '6379:6379'
+      - '8903:8001'
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - roomital-network
+
+volumes:
+  roomital_postgres_data:
+  roomital_pgadmin_data:
+  redis_data:
+
+networks:
+  roomital-network:
+    driver: bridge
